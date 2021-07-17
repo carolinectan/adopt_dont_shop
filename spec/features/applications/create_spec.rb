@@ -61,5 +61,40 @@ RSpec.describe 'application new page' do
       expect(page).to have_content("Description: #{Application.last.description}")
       expect(page).to have_content("Application Status: #{Application.last.application_status}")
     end
+
+    it 'will take the user back to the new applications page if the form is incomplete' do
+      visit '/pets'
+
+      click_link("Start an Application")
+
+      expect(current_path).to eq('/applications/new')
+
+      fill_in('name', with: 'Scott Borecki')
+      fill_in('street', with: '5532')
+      fill_in('state', with: 'CO')
+      fill_in('zip_code', with: '80001')
+      fill_in('description', with: 'Our cats want a dog friend!')
+
+      click_button('Submit')
+
+      expect(current_path).to eq("/applications/new")
+
+      expect(page).to have_content("New Application")
+      expect(page).to have_content("Name")
+      expect(page).to have_content("Street")
+      expect(page).to have_content("City")
+      expect(page).to have_content("State")
+      expect(page).to have_content("Zip Code")
+      expect(page).to have_content("Description")
+    end
+    # Starting an Application, Form not Completed
+    #
+    # As a visitor
+    # When I visit the new application page
+    # And I fail to fill in any of the form fields
+    # And I click submit
+    # Then I am taken back to the new applications page
+    # And I see a message that I must fill in those fields.
+
   end
 end
