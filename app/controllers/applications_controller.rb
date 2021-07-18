@@ -10,7 +10,6 @@ class ApplicationsController < ApplicationController
       @pets = Pet.search(params[:search])
     # else
     #   @pets = Pet.adoptable
-    # binding.pry
     end
 
   end
@@ -30,11 +29,23 @@ class ApplicationsController < ApplicationController
   end
 
   def update
-    app = Application.find(params[:id])
+    application = Application.find(params[:id])
     pet = Pet.find(params[:pet_id])
-    petapp = PetApplication.create!(pet: pet, application: app)
+    petapp = PetApplication.create!(pet: pet, application: application)
 
-    redirect_to "/applications/#{app.id}"
+    redirect_to "/applications/#{application.id}"
+  end
+
+  def update_description
+    application = Application.find(params[:id])
+
+    application.update({
+      description: params[:description],
+      application_status: params[:application_status]
+      })
+    application.save
+
+    redirect_to "/applications/#{application.id}"
   end
 
 private
