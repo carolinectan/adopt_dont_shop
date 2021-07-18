@@ -22,31 +22,33 @@ RSpec.describe 'the applications show page' do
     @pet_app_4 = PetApplication.create!(pet: @zephyr, application: @app_2)
   end
 
-  it 'can display the name, full address, description, pet(s) applied for, and status of the application' do
-    visit "/applications/#{@app_1.id}"
+  describe 'display attributes of an application' do
+    it 'can display the name, full address, description, pet(s) applied for, and status of the application' do
+      visit "/applications/#{@app_1.id}"
 
-    expect(page).to have_content("#{@app_1.name}'s Application")
-    expect(page).to have_content("Street: #{@app_1.street}")
-    expect(page).to have_content("City: #{@app_1.city}")
-    expect(page).to have_content("State: #{@app_1.state}")
-    expect(page).to have_content("Zip Code: #{@app_1.zip_code}")
-    expect(page).to have_content("Why I Would Make a Good Home: #{@app_1.description}")
-    expect(page).to have_content("Pet(s) Applied For: #{@pet_app_1.pet.name} , #{@pet_app_2.pet.name}")
-    expect(page).to have_content("Application Status: #{@app_1.application_status}")
-  end
+      expect(page).to have_content("#{@app_1.name}'s Application")
+      expect(page).to have_content("Street: #{@app_1.street}")
+      expect(page).to have_content("City: #{@app_1.city}")
+      expect(page).to have_content("State: #{@app_1.state}")
+      expect(page).to have_content("Zip Code: #{@app_1.zip_code}")
+      expect(page).to have_content("Why I Would Make a Good Home: #{@app_1.description}")
+      expect(page).to have_content("Pet(s) Applied For: #{@pet_app_1.pet.name} , #{@pet_app_2.pet.name}")
+      expect(page).to have_content("Application Status: #{@app_1.application_status}")
+    end
 
-  it 'can link to each pets show page in the pets applied for section' do
-    visit "/applications/#{@app_1.id}"
+    it 'can link to each pets show page in the pets applied for section' do
+      visit "/applications/#{@app_1.id}"
 
-    click_link("Bosco")
+      click_link("Bosco")
 
-    expect(current_path).to eq("/pets/#{@bosco.id}")
+      expect(current_path).to eq("/pets/#{@bosco.id}")
 
-    visit "/applications/#{@app_1.id}"
+      visit "/applications/#{@app_1.id}"
 
-    click_link("Lily")
+      click_link("Lily")
 
-    expect(current_path).to eq("/pets/#{@lily.id}")
+      expect(current_path).to eq("/pets/#{@lily.id}")
+    end
   end
 
   describe 'add a pet to an application' do
