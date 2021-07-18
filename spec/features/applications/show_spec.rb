@@ -20,7 +20,6 @@ RSpec.describe 'the applications show page' do
     @pet_app_2 = PetApplication.create!(pet: @lily, application: @app_1)
     @pet_app_3 = PetApplication.create!(pet: @izze, application: @app_2)
     @pet_app_4 = PetApplication.create!(pet: @zephyr, application: @app_2)
-    @pet_app_5 = PetApplication.create!(pet: @ruger, application: @app_3)
   end
 
   it 'can display the name, full address, description, pet(s) applied for, and status of the application' do
@@ -48,5 +47,19 @@ RSpec.describe 'the applications show page' do
     click_link("Lily")
 
     expect(current_path).to eq("/pets/#{@lily.id}")
+  end
+
+  it 'can search for pets to add to an unsubmitted application' do
+    visit "/applications/#{@app_3.id}"
+
+    expect(page).to have_content('Add a Pet to this Application')
+
+    fill_in 'Search', with: 'Lily'
+    click_on 'Search'
+
+    # Then I am taken back to the application show page
+    # And under the search bar I see any Pet whose name matches my search
+    expect(current_path).to eq("/applications/#{@app_3.id}")
+    expect(page).to have_content('Lily')
   end
 end

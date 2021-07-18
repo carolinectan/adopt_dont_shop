@@ -5,6 +5,14 @@ class ApplicationsController < ApplicationController
 
   def show
     @application = Application.find(params[:id])
+
+    binding.pry
+    if params[:search_pet]
+      @pets = Pet.search(params[:search_pet])
+    # else
+    #   @pets = Pet.adoptable
+    end
+
   end
 
   def new
