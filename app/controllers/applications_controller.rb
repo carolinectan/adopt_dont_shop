@@ -11,7 +11,6 @@ class ApplicationsController < ApplicationController
     # else
     #   @pets = Pet.adoptable
     end
-
   end
 
   def new
