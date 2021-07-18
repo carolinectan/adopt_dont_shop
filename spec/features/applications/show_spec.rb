@@ -14,7 +14,7 @@ RSpec.describe 'the applications show page' do
 
     @app_1 = Application.create!(name: 'Elliot O.', street: '5743 Squirrel Circle', city: 'Aspen', state: 'CO', zip_code: 81611, application_status: 'Pending', description: 'loves animals')
     @app_2 = Application.create!(name: 'Sami P.', street: '1123 Arbor Lane', city: 'Chicago', state: 'IL', zip_code: 60007, application_status: 'Approved', description: 'loving home')
-    @app_3 = Application.create!(name: 'Amanda M.', street: '883 Teller Court', city: 'Wheat Ridge', state: 'CO', zip_code: 80033, application_status: 'Pending', description: 'active family')
+    @app_3 = Application.create!(name: 'Amanda M.', street: '883 Teller Court', city: 'Wheat Ridge', state: 'CO', zip_code: 80033, application_status: 'In Progress', description: 'active family')
 
     @pet_app_1 = PetApplication.create!(pet: @bosco, application: @app_1)
     @pet_app_2 = PetApplication.create!(pet: @lily, application: @app_1)
@@ -30,7 +30,7 @@ RSpec.describe 'the applications show page' do
     expect(page).to have_content("City: #{@app_1.city}")
     expect(page).to have_content("State: #{@app_1.state}")
     expect(page).to have_content("Zip Code: #{@app_1.zip_code}")
-    expect(page).to have_content("Description: #{@app_1.description}")
+    expect(page).to have_content("Why I Would Make a Good Home: #{@app_1.description}")
     expect(page).to have_content("Pet(s) Applied For: #{@pet_app_1.pet.name} , #{@pet_app_2.pet.name}")
     expect(page).to have_content("Application Status: #{@app_1.application_status}")
   end
@@ -54,8 +54,8 @@ RSpec.describe 'the applications show page' do
 
     expect(page).to have_content('Add a Pet to this Application')
 
-    fill_in 'Search', with: 'Lily'
-    click_on 'Search'
+    fill_in :search, with: 'Lily'
+    click_button 'Search'
 
     # Then I am taken back to the application show page
     # And under the search bar I see any Pet whose name matches my search
