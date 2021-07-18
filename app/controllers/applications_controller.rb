@@ -11,7 +11,6 @@ class ApplicationsController < ApplicationController
     # else
     #   @pets = Pet.adoptable
     # binding.pry
-
     end
 
   end
@@ -30,8 +29,16 @@ class ApplicationsController < ApplicationController
     end
   end
 
+  def update
+    app = Application.find(params[:id])
+    pet = Pet.find(params[:pet_id])
+    petapp = PetApplication.create!(pet: pet, application: app)
+
+    redirect_to "/applications/#{app.id}"
+  end
+
 private
   def app_params
-    params.permit(:name, :street, :city, :state, :zip_code, :description, :application_status)
+    params.permit(:name, :street, :city, :state, :zip_code, :description, :application_status, :pets)
   end
 end

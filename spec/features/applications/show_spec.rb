@@ -49,17 +49,32 @@ RSpec.describe 'the applications show page' do
     expect(current_path).to eq("/pets/#{@lily.id}")
   end
 
-  it 'can search for pets to add to an unsubmitted application' do
-    visit "/applications/#{@app_3.id}"
+  describe 'add a pet to an application' do
+    it 'can search for pets to add to an unsubmitted application' do
+      visit "/applications/#{@app_3.id}"
 
-    expect(page).to have_content('Add a Pet to this Application')
+      expect(page).to have_content('Add a Pet to this Application')
 
-    fill_in :search, with: 'Lily'
-    click_button 'Search'
+      fill_in :search, with: 'Lily'
+      click_button 'Search'
 
-    # Then I am taken back to the application show page
-    # And under the search bar I see any Pet whose name matches my search
-    expect(current_path).to eq("/applications/#{@app_3.id}")
-    expect(page).to have_content('Lily')
+      expect(current_path).to eq("/applications/#{@app_3.id}")
+      expect(page).to have_content('Lily')
+    end
+
+    it 'can add a pet to an application' do
+      visit "/applications/#{@app_3.id}"
+
+      fill_in :search, with: 'Lily'
+      click_button 'Search'
+
+      expect(current_path).to eq("/applications/#{@app_3.id}")
+      expect(page).to have_content('Lily')
+
+      click_button "Adopt #{@lily.name}"
+
+      expect(current_path).to eq("/applications/#{@app_3.id}")
+      expect(page).to have_content("Pet(s) Applied For: #{@lily.name}")
+    end
   end
 end
