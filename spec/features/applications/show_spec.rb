@@ -106,9 +106,6 @@ RSpec.describe 'the applications show page' do
 
       expect(page).to_not have_content('Add a Pet to this Application')
       expect(page).to_not have_content('Submit My Application')
-
-      # And I see all the pets that I want to adopt
-      # And I do not see a section to add more pets to this application
     end
   end
 end
