@@ -47,7 +47,6 @@ RSpec.describe 'application new page' do
       fill_in(:city, with: 'Denver')
       fill_in(:state, with: 'CO')
       fill_in(:zip_code, with: '80202')
-      fill_in(:description, with: 'Coop needs more dog friends!')
 
       click_button('Submit')
 
@@ -58,7 +57,6 @@ RSpec.describe 'application new page' do
       expect(page).to have_content("City: #{Application.last.city}")
       expect(page).to have_content("State: #{Application.last.state}")
       expect(page).to have_content("Zip Code: #{Application.last.zip_code}")
-      expect(page).to have_content("Why I Would Make a Good Home: #{Application.last.description}")
       expect(page).to have_content("Application Status: #{Application.last.application_status}")
     end
 
@@ -73,7 +71,6 @@ RSpec.describe 'application new page' do
       fill_in(:street, with: '5532 Arbor Lane')
       fill_in(:state, with: 'CO')
       fill_in(:zip_code, with: '80001')
-      fill_in(:description, with: 'Our cats want a dog friend!')
 
       click_button('Submit')
 
@@ -85,7 +82,6 @@ RSpec.describe 'application new page' do
       expect(page).to have_content("City")
       expect(page).to have_content("State")
       expect(page).to have_content("Zip Code")
-      expect(page).to have_content("Why I Would Make a Good Home")
     end
   end
 end
