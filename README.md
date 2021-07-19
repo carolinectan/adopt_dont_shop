@@ -2,7 +2,7 @@
 
 ### Existing database design
 
-![visual-schema.png](app/assets/images/databased_design.png)
+![visual-schema.png](app/assets/images/databases_design.png)
 
 ## Learning Goals
 
