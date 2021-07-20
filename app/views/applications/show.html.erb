@@ -24,8 +24,10 @@
 
 <% if(params[:search]) %>
   <% @pets.each do |pet| %>
-    <h4><%= pet.name %></h4>
-    <p><%= button_to "Adopt #{pet.name}", "/applications/#{@application.id}/#{pet.id}", method: :patch %></p>
+    <%# <% if pet.adoptable == 'TRUE' %> %>
+        <h4><%= pet.name %></h4>
+        <p><%= button_to "Adopt #{pet.name}", "/applications/#{@application.id}/#{pet.id}", method: :patch %></p>
+
   <% end %>
 <% end %>
 

@@ -16,9 +16,26 @@
     <p>Application for <%= pet.name %> has been rejected.</p>
   <% else %>
     <%= button_to "Approve #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id, status: 'Approved'}, method: :patch %>
+
+
+
     <%= button_to "Reject #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id, status: 'Rejected'}, method: :patch %>
   <% end %>
-
 <% end %>
 <br><br>
+
+<% @application.pet_applications.all? do |pa| %>
+  <% if (pa.pet_app_status == 'Approved') == true %>
+    <% @application.update(application_status: 'Approved') %>
+    <% @application.pets.each do |pet| %>
+      <% pet.update(adoptable: FALSE) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% @application.pet_applications.each do |pa| %>
+  <% if pa.pet_app_status == 'Rejected' %>
+    <% @application.update(application_status: 'Rejected') %>
+  <% end %>
+<% end %>
 <p><%= "Application Status: #{@application.application_status}" %></p>
