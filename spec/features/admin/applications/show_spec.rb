@@ -36,7 +36,7 @@ RSpec.describe 'the admin shelters show page' do
 
     expect(current_path).to eq("/admin/applications/#{@app_1.id}")
     expect(page).to have_content("Application for #{@jasmine.name} has been approved!")
-    expect(page).to_not have_selector('input[type=button] [value="Approve #{@jasmine.name}"]')
+    expect(page).to_not have_button("Approve #{@jasmine.name}")
   end
 
   it 'can reject a pet for adoption' do
@@ -46,10 +46,35 @@ RSpec.describe 'the admin shelters show page' do
 
     expect(current_path).to eq("/admin/applications/#{@app_1.id}")
     expect(page).to have_content("Application for #{@finn.name} has been rejected.")
-    expect(page).to_not have_selector('input[type=button] [value="Reject #{@finn.name}"]')
+    expect(page).to_not have_button("Reject #{@finn.name}")
   end
 
-  it 'can approve/reject a pet on one application and not affect other applications' do
+  it 'can approve a pet on one application and not affect other applications' do
+    visit ("/admin/applications/#{@app_1.id}")
+
+    click_button("Approve #{@finn.name}")
+    expect(page).to have_content("Application for #{@finn.name} has been approved!")
+    expect(page).to_not have_button("Approve #{@finn.name}")
+
+    visit ("/admin/applications/#{@app_2.id}")
+    expect(page).to_not have_content("Application for #{@finn.name} has been approved!")
+    expect(page).to have_button("Approve #{@finn.name}")
+
+  end
+
+  it 'can reject a pet on one application and not affect other applications' do
+    visit ("/admin/applications/#{@app_1.id}")
+
+    click_button("Reject #{@finn.name}")
+    expect(page).to have_content("Application for #{@finn.name} has been rejected.")
+    expect(page).to_not have_button("Reject #{@finn.name}")
+
+    visit ("/admin/applications/#{@app_2.id}")
+    # save_and_open_page
+    expect(page).to_not have_content("Application for #{@finn.name} has been rejected.")
+    expect(page).to have_button("Reject #{@finn.name}")
+
+    # And instead I see buttons to approve or reject the pet for this specific application
 
   end
 end
