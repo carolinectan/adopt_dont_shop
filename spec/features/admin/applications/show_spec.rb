@@ -59,7 +59,7 @@ RSpec.describe 'the admin shelters show page' do
     visit ("/admin/applications/#{@app_2.id}")
     expect(page).to_not have_content("Application for #{@finn.name} has been approved!")
     expect(page).to have_button("Approve #{@finn.name}")
-
+    expect(page).to have_button("Reject #{@finn.name}")
   end
 
   it 'can reject a pet on one application and not affect other applications' do
@@ -70,11 +70,9 @@ RSpec.describe 'the admin shelters show page' do
     expect(page).to_not have_button("Reject #{@finn.name}")
 
     visit ("/admin/applications/#{@app_2.id}")
-    # save_and_open_page
+
     expect(page).to_not have_content("Application for #{@finn.name} has been rejected.")
     expect(page).to have_button("Reject #{@finn.name}")
-
-    # And instead I see buttons to approve or reject the pet for this specific application
-
+    expect(page).to have_button("Approve #{@finn.name}")
   end
 end
