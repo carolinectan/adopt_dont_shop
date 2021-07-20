@@ -15,10 +15,14 @@ RSpec.describe 'the admin shelters show page' do
     @finn = @shelter_2.pets.create!(name: 'Finn', adoptable: true, age: 8, breed: 'Australian Shepard')
 
     @app_1 = Application.create!(name: 'Jacob Piland', street: '953 Brewers Street', city: 'Austin', state: 'TX', zip_code: 78704, application_status: 'Pending', description: 'Dog friendly family home with big yard')
+    @app_2 = Application.create!(name: 'Sami Peterson', street: '1123 Arbor Lane', city: 'Chicago', state: 'IL', zip_code: 60007, application_status: 'Pending', description: 'Responsible care taker')
 
     @petapp_1 = PetApplication.create!(pet: @jasmine, application: @app_1)
     @petapp_2 = PetApplication.create!(pet: @clyde, application: @app_1)
     @petapp_3 = PetApplication.create!(pet: @finn, application: @app_1)
+    @petapp_4 = PetApplication.create!(pet: @jasmine, application: @app_2)
+    @petapp_5 = PetApplication.create!(pet: @clyde, application: @app_2)
+    @petapp_6 = PetApplication.create!(pet: @finn, application: @app_2)
   end
 
   it 'can approve a pet for adoption' do
@@ -32,6 +36,7 @@ RSpec.describe 'the admin shelters show page' do
 
     expect(current_path).to eq("/admin/applications/#{@app_1.id}")
     expect(page).to have_content("Application for #{@jasmine.name} has been approved!")
+    expect(page).to_not have_selector('input[type=button] [value="Approve #{@jasmine.name}"]')
   end
 
   it 'can reject a pet for adoption' do
@@ -41,5 +46,10 @@ RSpec.describe 'the admin shelters show page' do
 
     expect(current_path).to eq("/admin/applications/#{@app_1.id}")
     expect(page).to have_content("Application for #{@finn.name} has been rejected.")
+    expect(page).to_not have_selector('input[type=button] [value="Reject #{@finn.name}"]')
+  end
+
+  it 'can approve/reject a pet on one application and not affect other applications' do
+
   end
 end
