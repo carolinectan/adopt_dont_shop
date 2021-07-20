@@ -25,54 +25,89 @@ RSpec.describe 'the admin shelters show page' do
     @petapp_6 = PetApplication.create!(pet: @finn, application: @app_2)
   end
 
-  it 'can approve a pet for adoption' do
-    visit ("/admin/applications/#{@app_1.id}")
+  describe 'it can approve or reject a pet' do
+    it 'can approve a pet for adoption' do
+      visit ("/admin/applications/#{@app_1.id}")
 
-    expect(page).to have_content(@jasmine.name)
-    expect(page).to have_content(@clyde.name)
-    expect(page).to have_content(@finn.name)
+      expect(page).to have_content(@jasmine.name)
+      expect(page).to have_content(@clyde.name)
+      expect(page).to have_content(@finn.name)
 
-    click_button("Approve #{@jasmine.name}")
+      click_button("Approve #{@jasmine.name}")
 
-    expect(current_path).to eq("/admin/applications/#{@app_1.id}")
-    expect(page).to have_content("Application for #{@jasmine.name} has been approved!")
-    expect(page).to_not have_button("Approve #{@jasmine.name}")
+      expect(current_path).to eq("/admin/applications/#{@app_1.id}")
+      expect(page).to have_content("Application for #{@jasmine.name} has been approved!")
+      expect(page).to_not have_button("Approve #{@jasmine.name}")
+    end
+
+    it 'can reject a pet for adoption' do
+      visit ("/admin/applications/#{@app_1.id}")
+
+      click_button("Reject #{@finn.name}")
+
+      expect(current_path).to eq("/admin/applications/#{@app_1.id}")
+      expect(page).to have_content("Application for #{@finn.name} has been rejected.")
+      expect(page).to_not have_button("Reject #{@finn.name}")
+    end
+
+    it 'can approve a pet on one application and not affect other applications' do
+      visit ("/admin/applications/#{@app_1.id}")
+
+      click_button("Approve #{@finn.name}")
+      expect(page).to have_content("Application for #{@finn.name} has been approved!")
+      expect(page).to_not have_button("Approve #{@finn.name}")
+
+      visit ("/admin/applications/#{@app_2.id}")
+      expect(page).to_not have_content("Application for #{@finn.name} has been approved!")
+      expect(page).to have_button("Approve #{@finn.name}")
+      expect(page).to have_button("Reject #{@finn.name}")
+    end
+
+    it 'can reject a pet on one application and not affect other applications' do
+      visit ("/admin/applications/#{@app_1.id}")
+
+      click_button("Reject #{@finn.name}")
+      expect(page).to have_content("Application for #{@finn.name} has been rejected.")
+      expect(page).to_not have_button("Reject #{@finn.name}")
+
+      visit ("/admin/applications/#{@app_2.id}")
+
+      expect(page).to_not have_content("Application for #{@finn.name} has been rejected.")
+      expect(page).to have_button("Reject #{@finn.name}")
+      expect(page).to have_button("Approve #{@finn.name}")
+    end
   end
 
-  it 'can reject a pet for adoption' do
-    visit ("/admin/applications/#{@app_1.id}")
+  describe 'a completed application' do
+    it 'can approve all pets on an application and change application status to approved' do
+      visit ("/admin/applications/#{@app_1.id}")
 
-    click_button("Reject #{@finn.name}")
+      click_button("Approve #{@finn.name}")
+      click_button("Approve #{@jasmine.name}")
+      click_button("Approve #{@clyde.name}")
 
-    expect(current_path).to eq("/admin/applications/#{@app_1.id}")
-    expect(page).to have_content("Application for #{@finn.name} has been rejected.")
-    expect(page).to_not have_button("Reject #{@finn.name}")
-  end
+      expect(current_path).to eq("/admin/applications/#{@app_1.id}")
+      expect(page).to have_content("Application Status: Approved")
+    end
 
-  it 'can approve a pet on one application and not affect other applications' do
-    visit ("/admin/applications/#{@app_1.id}")
+    it 'can reject one or more pets and approve all other pets and change application status to rejected' do
+      visit ("/admin/applications/#{@app_1.id}")
 
-    click_button("Approve #{@finn.name}")
-    expect(page).to have_content("Application for #{@finn.name} has been approved!")
-    expect(page).to_not have_button("Approve #{@finn.name}")
+      click_button("Approve #{@finn.name}")
+      click_button("Reject #{@jasmine.name}")
+      click_button("Approve #{@clyde.name}")
 
-    visit ("/admin/applications/#{@app_2.id}")
-    expect(page).to_not have_content("Application for #{@finn.name} has been approved!")
-    expect(page).to have_button("Approve #{@finn.name}")
-    expect(page).to have_button("Reject #{@finn.name}")
-  end
+      expect(current_path).to eq("/admin/applications/#{@app_1.id}")
+      expect(page).to have_content("Application Status: Rejected")
 
-  it 'can reject a pet on one application and not affect other applications' do
-    visit ("/admin/applications/#{@app_1.id}")
+      visit ("/admin/applications/#{@app_2.id}")
 
-    click_button("Reject #{@finn.name}")
-    expect(page).to have_content("Application for #{@finn.name} has been rejected.")
-    expect(page).to_not have_button("Reject #{@finn.name}")
+      click_button("Reject #{@finn.name}")
+      click_button("Reject #{@jasmine.name}")
+      click_button("Approve #{@clyde.name}")
 
-    visit ("/admin/applications/#{@app_2.id}")
-
-    expect(page).to_not have_content("Application for #{@finn.name} has been rejected.")
-    expect(page).to have_button("Reject #{@finn.name}")
-    expect(page).to have_button("Approve #{@finn.name}")
+      expect(current_path).to eq("/admin/applications/#{@app_2.id}")
+      expect(page).to have_content("Application Status: Rejected")
+    end
   end
 end
