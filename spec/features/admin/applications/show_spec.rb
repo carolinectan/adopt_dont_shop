@@ -34,6 +34,14 @@ RSpec.describe 'the admin shelters show page' do
 
     expect(current_path).to eq("/admin/applications/#{@app_1.id}")
     expect(page).to have_content("Application for #{@jasmine.name} has been approved!")
-    
+  end
+
+  it 'can reject a pet for adoption' do
+    visit ("/admin/applications/#{@app_1.id}")
+
+    click_button("Reject #{@finn.name}")
+
+    expect(current_path).to eq("/admin/applications/#{@app_1.id}")
+    expect(page).to have_content("Application for #{@finn.name} has been rejected.")
   end
 end

@@ -16,6 +16,7 @@
     <p>Application for <%= pet.name %> has been rejected.</p>
   <% else %>
     <%= button_to "Approve #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id, status: 'Approved'}, method: :patch %>
+    <%= button_to "Reject #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id, status: 'Rejected'}, method: :patch %>
   <% end %>
 
 <% end %>
