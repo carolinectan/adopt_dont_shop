@@ -15,8 +15,6 @@ RSpec.describe 'the admin shelters show page' do
     @finn = @shelter_2.pets.create!(name: 'Finn', adoptable: true, age: 8, breed: 'Australian Shepard')
 
     @app_1 = Application.create!(name: 'Jacob Piland', street: '953 Brewers Street', city: 'Austin', state: 'TX', zip_code: 78704, application_status: 'Pending', description: 'Dog friendly family home with big yard')
-    # @app_2 = Application.create!(name: 'Sami Peterson', street: '1123 Arbor Lane', city: 'Chicago', state: 'IL', zip_code: 60007, application_status: 'Approved', description: 'Responsible care taker')
-    # @app_3 = Application.create!(name: 'Brian Fletcher', street: '9090 Veterans Street', city: 'Wells', state: 'ME', zip_code: 14090, application_status: 'In Progress', description: 'Adventure loving family')
 
     @petapp_1 = PetApplication.create!(pet: @jasmine, application: @app_1)
     @petapp_2 = PetApplication.create!(pet: @clyde, application: @app_1)
