@@ -31,7 +31,7 @@
   <% end %>
 <% end %>
 
-<% if(@application.pets.length > 0) && @application.application_status == 'In Progress'%>
+<% if(@application.pets_length?) && @application.application_status == 'In Progress'%>
   <h3>Submit My Application</h3>
   <%= form_with url: "/applications/#{@application.id}", method: :patch, local: true do |f| %>
     <%= f.label :description, 'Why I Would Make a Good Owner:' %>
