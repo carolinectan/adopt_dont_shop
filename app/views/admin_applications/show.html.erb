@@ -1,0 +1,37 @@
+<h1><%= "#{@application.name}'s Application" %></h1>
+<p><i>(Admin View)</i></p>
+
+<p><%= "Street: #{@application.street}" %></p>
+<p><%= "City: #{@application.city}" %></p>
+<p><%= "State: #{@application.state}" %></p>
+<p><%= "Zip Code: #{@application.zip_code}" %></p>
+<p><%= "Why I Would Make a Good Owner: #{@application.description}" %></p>
+
+<p>Pet(s) Applied For: <% @application.pets.each do |pet| %></p>
+  <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
+  <% if @pet_applications.find_by_pet_id_and_app_id(pet.id, @application.id).pet_app_status == 'Approved' %>
+    <p>Application for <%= pet.name %> has been approved!</p>
+  <% elsif @pet_applications.find_by_pet_id_and_app_id(pet.id, @application.id).pet_app_status == 'Rejected' %>
+    <p>Application for <%= pet.name %> has been rejected.</p>
+  <% else %>
+    <%= button_to "Approve #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id, status: 'Approved'}, method: :patch %>
+    <%= button_to "Reject #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id, status: 'Rejected'}, method: :patch %>
+  <% end %>
+<% end %>
+<br><br>
+
+<% @application.pet_applications.all? do |pa| %>
+  <% if (pa.pet_app_status == 'Approved') == true %>
+    <% @application.update(application_status: 'Approved') %>
+    <% @application.pets.each do |pet| %>
+      <% pet.update(adoptable: FALSE) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% @application.pet_applications.each do |pa| %>
+  <% if pa.pet_app_status == 'Rejected' %>
+    <% @application.update(application_status: 'Rejected') %>
+  <% end %>
+<% end %>
+<p><%= "Application Status: #{@application.application_status}" %></p>

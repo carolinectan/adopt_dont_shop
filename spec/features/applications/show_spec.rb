@@ -65,6 +65,9 @@ RSpec.describe 'the applications show page' do
     it 'can add a pet to an application' do
       visit "/applications/#{@app_3.id}"
 
+      expect(page).to_not have_content('Lily')
+      expect(page).to_not have_content('Submit My Application')
+
       fill_in :search, with: 'Lily'
       click_button 'Search'
 

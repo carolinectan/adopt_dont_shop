@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'the pets index' do
   before :each do
-    Pet.destroy_all
-    Shelter.destroy_all
+    # Pet.destroy_all
+    # Shelter.destroy_all
 
     @shelter = Shelter.create(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
     @pet_1 = Pet.create(adoptable: true, age: 1, breed: 'sphynx', name: 'Lucille Bald', shelter_id: @shelter.id)

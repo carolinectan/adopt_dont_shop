@@ -9,7 +9,6 @@ RSpec.describe 'the shelter show' do
   end
 
   it "shows the shelter and all it's attributes" do
-
     visit "/pets/#{@pet1.id}"
 
     expect(page).to have_content(@pet1.name)

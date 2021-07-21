@@ -22,9 +22,8 @@ RSpec.describe 'the shelters index' do
     @petapp_2 = PetApplication.create!(pet: @clyde, application: @app_2)
     @petapp_3 = PetApplication.create!(pet: @finn, application: @app_3)
   end
-  
-  it 'lists all shelters in reverse alphabetical order by name' do
 
+  it 'lists all shelters in reverse alphabetical order by name' do
     visit '/admin/shelters'
 
     expect(page).to have_content("#{@shelter_2.name}\n#{@shelter_3.name}\n#{@shelter_1.name}")
