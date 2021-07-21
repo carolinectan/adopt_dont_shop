@@ -118,13 +118,13 @@ RSpec.describe 'the admin shelters show page' do
       click_button("Approve #{@clyde.name}")
 
       visit("/pets/#{@finn.id}")
-      expect(page).to have_content("#{@finn.name} is no longer adopatable.")
+      expect(page).to have_content("#{@finn.name} is no longer adoptable.")
 
       visit("/pets/#{@jasmine.id}")
-      expect(page).to have_content("#{@finn.name} is no longer adopatable.")
+      expect(page).to have_content("#{@jasmine.name} is no longer adoptable.")
 
       visit("/pets/#{@clyde.id}")
-      expect(page).to have_content("#{@finn.name} is no longer adopatable.")
+      expect(page).to have_content("#{@clyde.name} is no longer adoptable.")
     end
   end
 end
