@@ -109,22 +109,5 @@ RSpec.describe 'the admin shelters show page' do
       expect(current_path).to eq("/admin/applications/#{@app_2.id}")
       expect(page).to have_content("Application Status: Rejected")
     end
-
-    it 'can approve an application and make those pets not adoptable' do
-      visit ("/admin/applications/#{@app_1.id}")
-
-      click_button("Approve #{@finn.name}")
-      click_button("Approve #{@jasmine.name}")
-      click_button("Approve #{@clyde.name}")
-
-      visit("/pets/#{@finn.id}")
-      expect(page).to have_content("#{@finn.name} is no longer adoptable.")
-
-      visit("/pets/#{@jasmine.id}")
-      expect(page).to have_content("#{@jasmine.name} is no longer adoptable.")
-
-      visit("/pets/#{@clyde.id}")
-      expect(page).to have_content("#{@clyde.name} is no longer adoptable.")
-    end
   end
 end
