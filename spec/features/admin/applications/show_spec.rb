@@ -2,6 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'the admin shelters show page' do
   before(:each) do
+    PetApplication.destroy_all
+    Pet.destroy_all
+    Shelter.destroy_all
+    Application.destroy_all
+
     @shelter_1 = Shelter.create(name: 'Aurora Shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
     @shelter_2 = Shelter.create(name: 'RGV Animal Shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
     @shelter_3 = Shelter.create(name: 'Fancy Pets of Colorado', city: 'Denver, CO', foster_program: true, rank: 10)
@@ -108,6 +113,47 @@ RSpec.describe 'the admin shelters show page' do
 
       expect(current_path).to eq("/admin/applications/#{@app_2.id}")
       expect(page).to have_content("Application Status: Rejected")
+    end
+
+    it 'can approve an application and make those pets not adoptable' do
+      visit ("/admin/applications/#{@app_1.id}")
+
+      click_button("Approve #{@finn.name}")
+      click_button("Approve #{@jasmine.name}")
+      click_button("Approve #{@clyde.name}")
+
+      visit("/pets/#{@finn.id}")
+      expect(page).to have_content("#{@finn.name} is no longer adoptable.")
+
+      visit("/pets/#{@jasmine.id}")
+      expect(page).to have_content("#{@jasmine.name} is no longer adoptable.")
+
+      visit("/pets/#{@clyde.id}")
+      expect(page).to have_content("#{@clyde.name} is no longer adoptable.")
+    end
+
+    xit 'can have pets only have one approved application on them at any time' do
+      visit ("/admin/applications/#{@app_1.id}")
+      # save_and_open_page
+
+      # When a pet has an "Approved" application on them
+      click_button("Approve #{@finn.name}")
+      click_button("Approve #{@jasmine.name}")
+      click_button("Approve #{@clyde.name}")
+
+      # save_and_open_page
+      visit ("/admin/applications/#{@app_2.id}")
+      # And when the pet has a "Pending" application on them
+      # And I visit the admin application show page for the pending application
+      # save_and_open_page
+
+      expect(page).to_not have_button("Approve #{@finn.name}")
+      # Then next to the pet I do not see a button to approve them
+      # And instead I see a message that this pet has been approved for adoption
+      expect(page).to have_content("#{@clyde.name} has been approved for adoption.")
+
+      # And I do see a button to reject them
+      expect(page).to have_button("Reject #{@finn.name}")
     end
   end
 end

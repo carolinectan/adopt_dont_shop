@@ -24,9 +24,7 @@ RSpec.describe 'the shelters index' do
   end
 
   it 'lists all shelters in reverse alphabetical order by name' do
-
     visit '/admin/shelters'
-save_and_open_page
 
     expect(page).to have_content("#{@shelter_2.name}\n#{@shelter_3.name}\n#{@shelter_1.name}")
   end
