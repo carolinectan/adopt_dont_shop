@@ -116,6 +116,16 @@ RSpec.describe 'the admin shelters show page' do
     end
 
     it 'can approve an application and make those pets not adoptable' do
+      visit("/pets/#{@finn.id}")
+      expect(page).to have_content("Adoptable: true\nShelter")
+
+      visit("/pets/#{@jasmine.id}")
+      expect(page).to have_content("Adoptable: true\nShelter")
+
+      visit("/pets/#{@clyde.id}")
+      expect(page).to have_content("Adoptable: true\nShelter")
+
+
       visit ("/admin/applications/#{@app_1.id}")
 
       click_button("Approve #{@finn.name}")
@@ -123,13 +133,13 @@ RSpec.describe 'the admin shelters show page' do
       click_button("Approve #{@clyde.name}")
 
       visit("/pets/#{@finn.id}")
-      expect(page).to have_content("#{@finn.name} is no longer adoptable.")
+      expect(page).to have_content("Adoptable: false ; #{@finn.name} is no longer adoptable.")
 
       visit("/pets/#{@jasmine.id}")
-      expect(page).to have_content("#{@jasmine.name} is no longer adoptable.")
+      expect(page).to have_content("Adoptable: false ; #{@jasmine.name} is no longer adoptable.")
 
       visit("/pets/#{@clyde.id}")
-      expect(page).to have_content("#{@clyde.name} is no longer adoptable.")
+      expect(page).to have_content("Adoptable: false ; #{@clyde.name} is no longer adoptable.")
     end
 
     xit 'can have pets only have one approved application on them at any time' do

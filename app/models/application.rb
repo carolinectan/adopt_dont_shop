@@ -14,6 +14,5 @@ class Application < ApplicationRecord
   end
 end
 
-
 # specific model -> specific controller for that model -> view / crud for that model
 # single responsibility principle ^^ a model deals with one resource, a controller deals with one model, a view deals wiht one crud action for a specific model

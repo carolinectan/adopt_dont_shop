@@ -9,9 +9,9 @@
 
 <p>Pet(s) Applied For: <% @application.pets.each do |pet| %></p>
   <%= link_to "#{pet.name}", "/pets/#{pet.id}" %>
-  <% if @pet_applications.find_by_pet_id_and_app_id(pet.id, @application.id).pet_app_status == 'Approved' %>
+  <% if pet.pet_applications.find_by(application_id: @application.id).pet_app_status == 'Approved' %>
     <p>Application for <%= pet.name %> has been approved!</p>
-  <% elsif @pet_applications.find_by_pet_id_and_app_id(pet.id, @application.id).pet_app_status == 'Rejected' %>
+  <% elsif pet.pet_applications.find_by(application_id: @application.id).pet_app_status == 'Rejected' %>
     <p>Application for <%= pet.name %> has been rejected.</p>
   <% else %>
     <%= button_to "Approve #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id, status: 'Approved'}, method: :patch %>
