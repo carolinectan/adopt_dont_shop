@@ -6,8 +6,7 @@ class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
 
-    if params[:search].present?
-      # try to use your @application instance variable to do what you wanna do here, if there is a relationship between applications and pets you could probably call application.pets you just have to figure out how that works with what you're trying to accomplish / logic
+    if params[:search]
       @pets = Pet.search(params[:search])
     # else
     #   @pets = Pet.adoptable
